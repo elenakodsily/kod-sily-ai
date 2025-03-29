@@ -54,7 +54,7 @@
 <body>
   <h1>🧠 ИИ-Психолог — КОД СИЛЫ</h1>
   <div class="chatbox">
-    <p>Задай вопрос — и я подберу практику или мягко направлю тебя 💬</p>
+    <p>Задай вопрос — и я подберу практику или мягко направлю тебя 🌿</p>
     <div class="input-group">
       <input type="text" id="userInput" placeholder="Напиши свой запрос..." />
       <button onclick="askGPT()">Отправить</button>
@@ -68,7 +68,7 @@
       const responseBox = document.getElementById("response");
       responseBox.innerText = "⌛ Обрабатываю запрос...";
 
-      const apiKey = "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"
+      const apiKey = "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" 
 
       const payload = {
         model: "gpt-3.5-turbo",
@@ -114,11 +114,19 @@
         });
 
         const data = await res.json();
-        const gptReply = data.choices?.[0]?.message?.content || "Что-то пошло не так...";
-        responseBox.innerText = gptReply;
+
+        if (data.choices?.[0]?.message?.content) {
+          responseBox.innerText = data.choices[0].message.content;
+        } else if (data.error) {
+          responseBox.innerText = "❗ Ошибка от OpenAI: " + data.error.message;
+          console.error("OpenAI Error:", data.error);
+        } else {
+          responseBox.innerText = "Что-то пошло не так...";
+          console.error("Неожиданный ответ:", data);
+        }
       } catch (err) {
         responseBox.innerText = "Ошибка при обращении к ИИ. Проверь ключ и соединение.";
-        console.error(err);
+        console.error("Ошибка fetch:", err);
       }
     }
   </script>
