@@ -63,12 +63,19 @@
   </div>
 
   <script>
+    let apiKey = "";
+
+    window.onload = function () {
+      apiKey = prompt("🔐 Введите ваш OpenAI API ключ:");
+      if (!apiKey || !apiKey.startsWith("sk-")) {
+        alert("Неверный ключ. Пожалуйста, обновите страницу и попробуйте снова.");
+      }
+    };
+
     async function askGPT() {
       const input = document.getElementById("userInput").value;
       const responseBox = document.getElementById("response");
       responseBox.innerText = "⌛ Обрабатываю запрос...";
-
-      const apiKey = "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" 
 
       const payload = {
         model: "gpt-3.5-turbo",
