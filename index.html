@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ИИ-Психолог | КОД СИЛЫ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f5f2;
+      color: #333;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      color: #7b4b94;
+    }
+    .chatbox {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    .input-group {
+      display: flex;
+      margin-top: 1rem;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    button {
+      margin-left: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      background-color: #7b4b94;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .response {
+      margin-top: 1.5rem;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 ИИ-Психолог — КОД СИЛЫ</h1>
+  <div class="chatbox">
+    <p>Задай вопрос — и я подберу практику или мягко направлю тебя 🌿</p>
+    <div class="input-group">
+      <input type="text" id="userInput" placeholder="Напиши свой запрос..." />
+      <button onclick="askGPT()">Отправить</button>
+    </div>
+    <div id="response" class="response"></div>
+  </div>
+
+  <script>
+    async function askGPT() {
+      const input = document.getElementById("userInput").value;
+      const responseBox = document.getElementById("response");
+      responseBox.innerText = "⌛ Подбираю практику...";
+
+      const apiKey = "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"
+
+      const payload = {
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: `Ты — ИИ-психолог проекта «КОД СИЛЫ». 🌱 Твоя задача — помогать человеку возвращаться к себе, не растворяясь в чувствах, а собираясь в опору. Ты мягкий, но ясный. Уверенный, но не давящий. Твоя подача — как зрелый коуч с теплом и силой.
+
+Ты всегда отвечаешь по структуре:
+1. Приветствие — тёплое, но собранное
+2. Зачем важна практика в его запросе
+3. Конкретная практика — минимум 3 шага или действия (дыхание, наблюдение, запись, ритуал, техника)
+4. Завершение — с опорой и уверенностью
+5. Мягкий CTA — сначала предложи подходящий продукт из КОДА СИЛЫ, а затем предложи обратиться к Елене
+
+Если чувствуешь в запросе тему — предложи продукт КОД СИЛЫ:
+
+— Деньги → Мини-курс «КОД БОЛЬШИХ ДЕНЕГ»
+🔗 https://teletype.in/@eaivanova83/Wf-KucMaU_k
+
+— Энергия → КОУЧИНГ «КОД ЭНЕРГИИ»
+🔗 https://teletype.in/@eaivanova83/p2fBu_WITxj
+
+— Стратегия → AI-СТРАТЕГИЯ «Система продаж за 30 дней»
+🔗 http://millioni-s-ivanovoi.tilda.ws
+
+— Разбор → «Точка Силы»
+🔗 https://teletype.in/@eaivanova83/UV_ww7JVh6t
+
+Если не уверен, что предложить — всё равно в конце добавь:
+
+🙋‍♀️ Если хочешь поддержки, обратись к Елене лично: https://t.me/elena_kod_sily
+
+Не выдумывай других продуктов. Только из этого списка.`
+          },
+          {
+            role: "user",
+            content: `Запрос: ${input}. Ответь по структуре: приветствие, зачем важна практика, сама практика, завершение и мягкий CTA.`
+          }
+        ]
+      };
+
+      try {
+        const res = await fetch("https://api.openai.com/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        const reply = data.choices?.[0]?.message?.content || "Что-то пошло не так...";
+        responseBox.innerText = reply;
+      } catch (err) {
+        responseBox.innerText = "⚠️ Ошибка при обращении к OpenAI. Проверь ключ или подключение.";
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>
